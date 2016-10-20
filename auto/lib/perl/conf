@@ -28,8 +28,10 @@ if test -n "$NGX_PERL_VER"; then
         exit 1;
     fi
 
-    NGX_PERL_CFLAGS="$CFLAGS `$NGX_PERL -MExtUtils::Embed -e ccopts`"
     NGX_PM_CFLAGS=`$NGX_PERL -MExtUtils::Embed -e ccopts`
+    NGX_PM_LDFLAGS=`$NGX_PERL -MConfig -e 'print $Config{lddlflags}'`
+
+    NGX_PERL_CFLAGS="$CFLAGS `$NGX_PERL -MExtUtils::Embed -e ccopts`"
 
     # gcc 4.1/4.2 warn about unused values in pTHX_
     NGX_PERL_CFLAGS=`echo $NGX_PERL_CFLAGS \
@@ -60,8 +62,11 @@ if test -n "$NGX_PERL_VER"; then
                          | sed -e 's/-arch i386//' -e 's/-arch x86_64//'`
     fi
 
-    CORE_LINK="$CORE_LINK $ngx_perl_ldopts"
-    LINK_DEPS="$LINK_DEPS $NGX_OBJS/$ngx_perl_module"
+    if [ $USE_PERL = YES ]; then
+        CORE_LINK="$CORE_LINK $ngx_perl_ldopts"
+    fi
+
+    NGX_LIB_PERL="$ngx_perl_ldopts"
 
     if test -n "$NGX_PERL_MODULES"; then
         have=NGX_PERL_MODULES value="(u_char *) \"$NGX_PERL_MODULES\""

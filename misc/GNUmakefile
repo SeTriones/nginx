@@ -5,9 +5,9 @@ NGINX =		nginx-$(VER)
 TEMP =		tmp
 
 OBJS =		objs.msvc8
-OPENSSL =	openssl-1.0.2e
+OPENSSL =	openssl-1.0.2j
 ZLIB =		zlib-1.2.8
-PCRE =		pcre-8.38
+PCRE =		pcre-8.39
 
 
 release: export
@@ -19,8 +19,6 @@ release: export
 	rm $(TEMP)/$(NGINX)/src/event/ngx_event_connectex.c
 	rm $(TEMP)/$(NGINX)/src/event/modules/ngx_iocp_module.*
 	rm -r $(TEMP)/$(NGINX)/src/os/win32
-
-	rm -r $(TEMP)/$(NGINX)/src/mysql
 
 	mv $(TEMP)/$(NGINX)/docs/text/LICENSE $(TEMP)/$(NGINX)
 	mv $(TEMP)/$(NGINX)/docs/text/README $(TEMP)/$(NGINX)
@@ -86,8 +84,7 @@ win32:
 		--with-openssl-opt=no-asm				\
 		--with-http_ssl_module					\
 		--with-mail_ssl_module					\
-		--with-stream_ssl_module				\
-		--with-ipv6
+		--with-stream_ssl_module
 
 
 zip: export
